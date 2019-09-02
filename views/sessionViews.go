@@ -1,12 +1,13 @@
 package views
 
 import (
-	"log"
-	"net/http"
 	"github.com/korolev1307/news_site/db"
 	"github.com/korolev1307/news_site/sessions"
 	"github.com/korolev1307/news_site/types"
+	"log"
+	"net/http"
 )
+
 func RequiresLogin(handler func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !sessions.IsLoggedIn(r) {
@@ -37,11 +38,11 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		var context types.Context
-        context.LoggedIn = sessions.IsLoggedIn(r)
-        context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r)) 
-        if context.LoggedIn {
-        	http.Redirect(w, r, "/", 302)
-        } else {
+		context.LoggedIn = sessions.IsLoggedIn(r)
+		context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r))
+		if context.LoggedIn {
+			http.Redirect(w, r, "/", 302)
+		} else {
 			loginTemplate.Execute(w, context)
 		}
 	case "POST":
@@ -66,17 +67,17 @@ func LoginPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func SignUpPage(w http.ResponseWriter, r *http.Request) {
-	
+
 	switch r.Method {
 	case "GET":
 		var context types.Context
-        context.LoggedIn = sessions.IsLoggedIn(r)
-        if context.LoggedIn {
-        	http.Redirect(w, r, "/", 302)
-        } else {
-            signupTemplate.Execute(w, context)	
-        }
-		
+		context.LoggedIn = sessions.IsLoggedIn(r)
+		if context.LoggedIn {
+			http.Redirect(w, r, "/", 302)
+		} else {
+			signupTemplate.Execute(w, context)
+		}
+
 	case "POST":
 		r.ParseForm()
 		name := r.Form.Get("name")
@@ -84,7 +85,7 @@ func SignUpPage(w http.ResponseWriter, r *http.Request) {
 		patronumic := r.Form.Get("patronumic")
 		login := r.Form.Get("login")
 		password := r.Form.Get("password")
-	
+
 		log.Println(name, surname, patronumic, login, password)
 
 		err := db.CreateUser(name, surname, patronumic, login, password)

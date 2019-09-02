@@ -2,14 +2,14 @@ package views
 
 import (
 	//"html/template"
-	"io"
-	"net/http"
-	"os"
-	"log"
-	"strconv"
 	"github.com/korolev1307/news_site/db"
 	"github.com/korolev1307/news_site/sessions"
 	"github.com/korolev1307/news_site/types"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/disintegration/imaging"
 )
@@ -19,14 +19,14 @@ func AddNews(w http.ResponseWriter, r *http.Request) {
 	//GET displays the upload form.
 	case "GET":
 		var context types.Context
-        context.LoggedIn = sessions.IsLoggedIn(r)
-        context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r)) 
-        if context.LoggedIn {
-        	addnewsTemplate.Execute(w, context)
-        } else {
+		context.LoggedIn = sessions.IsLoggedIn(r)
+		context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r))
+		if context.LoggedIn {
+			addnewsTemplate.Execute(w, context)
+		} else {
 			http.Redirect(w, r, "/login/", 302)
 		}
-		
+
 	//POST takes the uploaded file(s) and saves it to disk.
 	case "POST":
 		//parse the multipart form in the request
@@ -56,8 +56,7 @@ func AddNews(w http.ResponseWriter, r *http.Request) {
 		} else {
 			filesbool = 0
 		}
-		path := "files/"  + strconv.Itoa(int(LastNewsid)) + "/images/"
-		
+		path := "files/" + strconv.Itoa(int(LastNewsid)) + "/images/"
 
 		for i, _ := range files {
 			//for each fileheader, get a handle to the actual file
@@ -70,12 +69,12 @@ func AddNews(w http.ResponseWriter, r *http.Request) {
 			}
 
 			//create destination file making sure the path is writeable.
-			errorfile := os.MkdirAll(path,os.ModePerm)
+			errorfile := os.MkdirAll(path, os.ModePerm)
 
 			if errorfile != nil {
- 				log.Println("Error creating directory")
- 				log.Println(errorfile)
- 				return
+				log.Println("Error creating directory")
+				log.Println(errorfile)
+				return
 			}
 			dst, err := os.Create(path + files[i].Filename)
 			defer dst.Close()
@@ -105,7 +104,6 @@ func AddNews(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func ResizeImage(address string) {
 	src, err := imaging.Open(address)
 	if err != nil {
@@ -119,19 +117,18 @@ func ResizeImage(address string) {
 	}
 }
 
-//HomePage is used to handle the "/" URL 
+//HomePage is used to handle the "/" URL
 //TODO add http404 error
 func HomePage(w http.ResponseWriter, r *http.Request) {
-    if r.Method == "GET" {
-        var context types.Context
-        context.LoggedIn = sessions.IsLoggedIn(r)
-        context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r)) 
-        homeTemplate.Execute(w, context)
-        //homeTemplate.ExecuteTemplate(w, "home.html", r)
-        message = ""
-    } else {
-        message = "Method not allowed"
-        http.Redirect(w, r, "/", http.StatusFound)
-    }
+	if r.Method == "GET" {
+		var context types.Context
+		context.LoggedIn = sessions.IsLoggedIn(r)
+		context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r))
+		homeTemplate.Execute(w, context)
+		//homeTemplate.ExecuteTemplate(w, "home.html", r)
+		message = ""
+	} else {
+		message = "Method not allowed"
+		http.Redirect(w, r, "/", http.StatusFound)
+	}
 }
-

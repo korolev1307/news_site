@@ -1,11 +1,12 @@
 package db
 
-import(
+import (
 	"log"
 	//"fmt"
 	"database/sql"
-  _ "github.com/mattn/go-sqlite3" 
+	_ "github.com/mattn/go-sqlite3"
 )
+
 var database Database
 var taskStatus map[string]int
 var err error
@@ -74,17 +75,16 @@ func Close() {
 	database.db.Close()
 }
 
-
 func SearchName(num int) (id int, name string) {
- //  var (
+	//  var (
 	// 	id int
 	// 	name string
 	// )
 	db, err := sql.Open("sqlite3", "news.db")
-    if err != nil {
-      log.Fatal(err)
-    }
-    defer db.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 	rows, err := db.Query("select id, name from users where id = ?", num)
 	if err != nil {
 		log.Fatal(err)
@@ -100,5 +100,5 @@ func SearchName(num int) (id int, name string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-  return id, name
+	return id, name
 }

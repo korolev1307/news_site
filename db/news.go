@@ -2,6 +2,7 @@ package db
 
 import (
 	"log"
+	//"github.com/korolev1307/news_site/types"
 )
 
 func AddNewsDB(title, content, folder_name, login string, images, files, publishing_at_main_page, publishing_at_lit_page, publishing_at_EC int) error {
@@ -18,7 +19,7 @@ func AddNewsDB(title, content, folder_name, login string, images, files, publish
 
 func GetLastNewsId() (int, error) {
 	query := "SELECT MAX(ID) AS LastID FROM news"
-	var id int 
+	var id int
 	rows := database.query(query)
 	defer rows.Close()
 	if rows.Next() {
@@ -31,7 +32,7 @@ func GetLastNewsId() (int, error) {
 	return id, nil
 }
 
-func GetAllNews() (types.Context, error) {
-	query := "select id, title, user_id, content, created_date, folder_name, images, approved_by_administrator, approved_by_moderator from news order by id asc"
+// func GetAllNews() (types.Context, error) {
+// 	query := "select id, title, user_id, content, created_date, folder_name, images, approved_by_administrator, approved_by_moderator from news order by id asc"
 
-}
+// }

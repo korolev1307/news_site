@@ -1,8 +1,8 @@
 package db
 
 import (
-	"log"
 	"github.com/korolev1307/news_site/types"
+	"log"
 )
 
 func CreateUser(name, surname, patronymic, login, password string) error {

@@ -1,8 +1,8 @@
 package sessions
 
 import (
-    "net/http"
-    "github.com/gorilla/sessions"
+	"github.com/gorilla/sessions"
+	"net/http"
 )
 
 //Store the cookie store which is going to store session data in the cookie
@@ -11,12 +11,12 @@ var session *sessions.Session
 
 //IsLoggedIn will check if the user has an active session and return True
 func IsLoggedIn(r *http.Request) bool {
-    session, _ := Store.Get(r, "session")
+	session, _ := Store.Get(r, "session")
 
-    if session.Values["loggedin"] == "true" {
-        return true
-    }
-    return false
+	if session.Values["loggedin"] == "true" {
+		return true
+	}
+	return false
 }
 
 func GetCurrentUserLogin(r *http.Request) string {
