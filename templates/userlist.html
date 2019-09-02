@@ -1,0 +1,49 @@
+{{template "_head.html" .}}
+
+<div class="container">
+	<h1 align="center">Список пользователей</h1>
+  <div class="custom-table">
+    <div class="custom-table-row custom-table-header">
+      <div class="custom-table-row-column custom-table-row-index">#</div>
+      <div class="custom-table-row-column custom-table-center">Фамилия</div>
+      <div class="custom-table-row-column custom-table-center">Имя</div>
+      <div class="custom-table-row-column custom-table-center">Отчество</div>
+      <div class="custom-table-row-column custom-table-center">Логин</div>
+      <div class="custom-table-row-column custom-table-center">Администратор</div>
+      <div class="custom-table-row-column custom-table-center">Модератор</div>
+      <div class="custom-table-row-column custom-table-center">Изменить</div>
+    </div>
+    {{range .Users}}
+    <form action="/userlist/" class="custom-table-row" method="POST">
+
+      <div class="custom-table-row-column custom-table-row-index">{{ .Id}}
+	  <input type="hidden" value="{{ .Id}}" name="id" />
+      </div>
+      <div class="custom-table-row-column custom-table-center">{{ .Name}}</div>
+      <div class="custom-table-row-column custom-table-center">{{ .Surname}}</div>
+      <div class="custom-table-row-column custom-table-center">{{ .Patronymic}}</div>
+      <div class="custom-table-row-column custom-table-center">{{ .Login}}</div>
+      <div class="custom-table-row-column custom-table-center">
+      	{{if .Administrator}}
+      	  <input class="form-check-input" type="checkbox" value="1" name="administrator" checked>
+		{{else}}
+		  <input class="form-check-input" type="checkbox" value="1" name="administrator">
+		{{end}}
+      </div>
+
+      <div class="custom-table-row-column custom-table-center">
+		{{if .Moderator}}
+      	  <input class="form-check-input" type="checkbox" value="1" name="moderator" checked>
+      	{{else}}
+      	  <input class="form-check-input" type="checkbox" value="1" name="moderator">
+      	{{end}}
+      </div>
+      <div class="custom-table-row-column custom-table-center">
+        <button type="submit" class="btn btn-outline-dark">Изменить</button>
+      </div>
+      </form>
+    {{end}}
+  </div>
+</div>
+</body>
+</html>
