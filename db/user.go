@@ -46,6 +46,21 @@ func GetUserID(username string) (int, error) {
 	return userID, nil
 }
 
+func GetUserById(id int) (types.User, error) {
+	var user types.User
+	query := "select name, surname, patronumic, administrator, moderator from users where id=?"
+	rows := database.query(query, id)
+	defer rows.Close()
+	if rows.Next() {
+		err := rows.Scan(&user.Name, &user.Surname, &user.Patronymic, &user.Administrator, &user.Moderator)
+		if err != nil {
+			return user, err
+		}
+		user.Id = id
+	}
+	return user, nil
+}
+
 func GetUserNameAndPatronymic(username string) (string, string) {
 	var name, patronymic string
 	userSQL := "select name, patronumic from users where login=?"

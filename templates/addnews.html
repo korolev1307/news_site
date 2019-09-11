@@ -1,10 +1,14 @@
 {{template "_head.html" .}}
 <div class="container">
   <h1>Добавить новость</h1>
-  <form enctype="multipart/form-data" action="/addnews/" method="POST">
+  <form enctype="multipart/form-data" action="/addnews/" method="POST" class="upload-form">
     <div class="form-group">
       <label>Заголовок новости</label>
       <input type="text" class="form-control" placeholder="Введите заголовок" name="title">
+    </div>
+    <div class="form-group">
+      <label>Превью к новости</label>
+      <textarea class="form-control" name="short_content" placeholder="Текст новости" rows="3" maxlength="215" ></textarea>
     </div>
     <div class="form-group">
       <label>Текст новости</label>
@@ -33,7 +37,7 @@
     <div class="form-group">
       <span id="file-group" class="hidden">
         Изображения к новости:
-        <input type="file" multiple="multiple" name="myfiles" id="myfiles" accept="image/*">
+        <input class="upload-file" type="file" multiple="multiple" name="myfiles" id="myfiles" accept="image/*" data-max-size="5242880">
       </span>
     </div>    
                         

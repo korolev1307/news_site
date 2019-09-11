@@ -29,3 +29,49 @@
   justify-content: center;
   border: 1px solid #ccc;
 }
+
+.RedOpacity {
+  background-color: rgba(240, 129, 129, 0.3);
+}
+
+.YellowOpacity {
+  background-color: rgba(240, 227, 129, 0.3);
+}
+
+.GreenOpacity {
+  background-color: rgba(41, 227, 128, 0.3);
+}
+
+a.newsstyles:link {
+  color: #212529;
+}
+
+a.newsstyles:visited {
+  color: #212529;
+}
+
+a.newsstyles:hover {
+  color: #212529;
+}
+
+a.newsstyles:active {
+  color: #212529;
+}
+
+.details-style {
+border: 1px solid #999;
+border-radius: 5px;
+margin: 0 2em .4em 2em;
+padding: 1.04%;
+margin: 1em;
+cursor: pointer;
+}
+ 
+.summary-title {
+border-radius: 5px;
+cursor: pointer;
+margin: -1%;
+padding: 8px 10px;
+background: -webkit-linear-gradient(top, #f3f3f3 50%, #e6e6e6 50%);
+}
+

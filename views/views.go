@@ -3,7 +3,6 @@ package views
 import (
 	"io/ioutil"
 	"os"
-	"strconv"
 	// "github.com/korolev1307/news_site/db"
 	// "github.com/korolev1307/news_site/sessions"
 	// "github.com/korolev1307/news_site/types"
@@ -17,6 +16,8 @@ var (
 	signupTemplate   *template.Template
 	addnewsTemplate  *template.Template
 	userlistTemplate *template.Template
+	shownewsTemplate *template.Template
+	editnewsTemplate *template.Template
 	// deletedTemplate   *template.Template
 	// completedTemplate *template.Template
 	loginTemplate *template.Template
@@ -59,24 +60,11 @@ func PopulateTemplates() {
 	signupTemplate = templates.Lookup("signup.html")
 	addnewsTemplate = templates.Lookup("addnews.html")
 	userlistTemplate = templates.Lookup("userlist.html")
+	shownewsTemplate = templates.Lookup("shownews.html")
+	editnewsTemplate = templates.Lookup("editnews.html")
 	// deletedTemplate = templates.Lookup("deleted.html")
 	// editTemplate = templates.Lookup("edit.html")
 	// searchTemplate = templates.Lookup("search.html")
 	// completedTemplate = templates.Lookup("completed.html")
 
-}
-
-func ParseAllImagesByID(id int) []string {
-	var allFiles []string
-	var filesdir = "./files/" + strconv.Itoa(int(id)) + "/"
-	files, err := ioutil.ReadDir(filesdir)
-	if err != nil {
-		log.Println(err)
-	}
-
-	for _, file := range files {
-		filename := file.Name()
-		allFiles = append(allFiles, filename)
-	}
-	return allFiles
 }

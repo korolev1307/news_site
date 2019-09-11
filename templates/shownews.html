@@ -1,0 +1,95 @@
+{{template "_head.html" .}}
+<div class="container">
+	<h1 style="padding-bottom: 15px;">{{.News.Title}}</h1>
+	<div class="font-weight-light">
+		{{ .News.Short_content }}
+	</div>
+	<hr>
+	<div class="font-weight-normal">
+		{{ .News.Content }}
+	</div>
+	<hr>
+	<h4>Требуется публикация:</h4>
+	{{if or .News.Publishing_at_main_page .News.Publishing_at_lit_page .News.Publishing_at_EC }}
+	<ul>
+		{{ if .News.Publishing_at_main_page }}
+		<li>
+			Публикация на главной странице
+		</li>
+		{{ end }}
+		{{ if .News.Publishing_at_lit_page }}
+		<li>
+			Публикация на странице лицея
+		</li>
+		{{ end }}
+		{{ if .News.Publishing_at_EC }}
+		<li>
+			Публикация на ЦО
+		</li>
+		{{ end }}
+	</ul>
+	{{else}}
+		<div>Публикация не требуется</div>
+	{{ end }}
+
+	<hr>
+	<h4>Одобрения к публикации:</h4>
+	{{if or .News.Approved_by_administrator .News.Approved_by_moderator }}
+	<ul>
+		{{ if .News.Approved_by_administrator }}
+		<li>
+			Одобрено администратором
+		</li>
+		{{ end }}
+		{{ if .News.Approved_by_moderator }}
+		<li>
+			Одобрено модератором
+		</li>
+		{{ end }}
+	</ul>
+	{{else}}
+		<div>Пока никто не одобрил</div>
+	{{ end }}
+	{{if .News.All_Files}}
+	<hr>
+	<details class="details-style">
+		<summary class="summary-title">Изображения к новости</summary>
+		{{range $a := .News.All_Files }}
+		<a href="/{{$a}}" download=><img src="/{{$a}}" style="margin-top: 10px;"/></a>
+		{{ end }}
+		</details>
+	{{ end }}	
+
+	<div class="font-weight-bold" >
+		<p style="overflow: hidden;">
+			<span style="float: left;">Автор новости: {{ .News.Author }}</span>
+			<span style="float: right;">Дата публикации: {{ .News.Created_date }}</span>
+		</p>
+	</div>
+
+	<hr>
+	{{ if .News.Moderated_by_id.Valid }}
+	<div class="font-weight-bold" >
+		<p style="overflow: hidden;">
+			<span style="float: left;">Новость модерирована: {{ .News.Moderator_name.String}}</span>
+			<span style="float: right;">Дата модерации: {{ .News.Moderated_at.String }}</span>
+		</p>
+	</div>
+	{{ end }}
+
+		{{ if or .User.Administrator .User.Moderator }}
+		<div align="right" class="btn-group" style="float: right;">
+			<a href="/approve/{{ .News.Id }}" class="btn btn-success">Одобрить к публикации</a>
+			<a href="/delete-news/{{ .News.Id }}" class="btn btn-danger">Удалить</a>
+			<a href="/edit/{{ .News.Id }}" class="btn btn-primary">Редактировать</a>
+		</div>
+		{{ else if eq .User.Id .News.User_id }}
+		<div align="right" class="btn-group" style="float: right;">
+			<a href="/delete-news/{{ .News.Id }}" class="btn btn-danger">Удалить</a>
+			<a href="/edit/{{ .News.Id }}" class="btn btn-primary">Редактировать</a>
+		</div>
+		{{ end }}
+	
+</div>
+</body>
+</html>

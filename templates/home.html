@@ -1,6 +1,45 @@
 {{template "_head.html" .}}
 <div class="container">
-	<h1>Главная страница</h1>
+	<h1 style="padding-bottom: 15px;">Все новости</h1>
+	<ul>
+		<li> Зеленый - одобрено администратором </li>
+		<li> Желтый - одобрено модератором </li>
+		<li> Красный - никем не одобрено </li>
+	</ul> 
+	<div class="container-fluid">
+
+	{{range .NewsArray}}
+	<a href="/news/{{ .Id }}" class="newsstyles" style="text-decoration: none;">
+	<div class="row" style="padding-bottom: 20px;">
+		<div class="col-md-2" style="display: flex;">
+			<img alt="Image Preview" style="margin: auto;" src="{{ .Filename }}" class="img-thumbnail" />
+		</div>
+		<div {{if .Approved_by_administrator}} 
+				class="col-md-10 GreenOpacity"
+			 {{else if .Approved_by_moderator}}
+			 	class="col-md-10 YellowOpacity"
+			 {{ else }}
+			 	class="col-md-10 RedOpacity"
+			 {{ end }}>
+			<h3 align="center">
+				{{ .Title }}
+			</h3>
+			<div class="font-italic">
+					{{ .Short_content }}
+			</div>
+			<div class="text-muted">
+				Автор новости: {{ .Author }}
+			</div>
+			<div class="font-weight-light">
+				Дата публикации: {{ .Created_date }}
+			</div>
+		</div>
+	</div>
+	</a>
+
+	{{end}}
+
+</div>
 </div>
 
 </body>

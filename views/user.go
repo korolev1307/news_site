@@ -13,6 +13,13 @@ func UserListPage(w http.ResponseWriter, r *http.Request) {
 	case "GET":
 		context, _ := db.GetAllUsers()
 		context.LoggedIn = sessions.IsLoggedIn(r)
+		login := sessions.GetCurrentUserLogin(r)
+		user_id, _ := db.GetUserID(login)
+		context.User, _ = db.GetUserById(user_id)
+
+		if !(context.LoggedIn && context.User.Administrator) {
+			http.Redirect(w, r, "/", http.StatusFound)
+		}
 		context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r))
 		log.Println(context)
 		userlistTemplate.Execute(w, context)
