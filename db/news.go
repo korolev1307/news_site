@@ -125,13 +125,20 @@ func GetNewsById(id int) (types.News, error) {
 	return News, err
 }
 
-func GetAllNews() ([]types.News, error) {
-	query := "select id, title, user_id, content, short_content, created_date, folder_name, images, approved_by_administrator, approved_by_moderator from news order by id desc"
+func GetAllNews(user_id int) ([]types.News, error) {
 	var NewsArray []types.News
 	var News types.News
 	var user types.User
 	var date string
-	rows := database.query(query)
+	var rows *sql.Rows
+	current_user, _ := GetUserById(user_id)
+	if current_user.Administrator || current_user.Moderator {
+		query := "select id, title, user_id, content, short_content, created_date, folder_name, images, approved_by_administrator, approved_by_moderator from news order by id desc"
+		rows = database.query(query)
+	} else {
+		query := "select id, title, user_id, content, short_content, created_date, folder_name, images, approved_by_administrator, approved_by_moderator from news where user_id=? OR approved_by_moderator=1 order by id desc"
+		rows = database.query(query, user_id)
+	}
 	defer rows.Close()
 	for rows.Next() {
 		err := rows.Scan(&News.Id, &News.Title, &News.User_id, &News.Content, &News.Short_content, &date, &News.Folder_name, &News.Images, &News.Approved_by_administrator, &News.Approved_by_moderator)

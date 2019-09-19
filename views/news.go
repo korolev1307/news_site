@@ -127,11 +127,11 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		var context types.Context
 		context.LoggedIn = sessions.IsLoggedIn(r)
 		context.CurrentName, context.CurrentPatronymic = db.GetUserNameAndPatronymic(sessions.GetCurrentUserLogin(r))
-		context.NewsArray, _ = db.GetAllNews()
 
 		login := sessions.GetCurrentUserLogin(r)
 		user_id, _ := db.GetUserID(login)
 		context.User, _ = db.GetUserById(user_id)
+		context.NewsArray, _ = db.GetAllNews(user_id)
 
 		homeTemplate.Execute(w, context)
 		//homeTemplate.ExecuteTemplate(w, "home.html", r)

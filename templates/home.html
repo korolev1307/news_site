@@ -1,11 +1,12 @@
 {{template "_head.html" .}}
 <div class="container">
+	{{ if .LoggedIn }}
 	<h1 style="padding-bottom: 15px;">Все новости</h1>
 	<ul>
 		<li> Зеленый - одобрено администратором </li>
 		<li> Желтый - одобрено модератором </li>
 		<li> Красный - никем не одобрено </li>
-	</ul> 
+	</ul>
 	<div class="container-fluid">
 
 	{{range .NewsArray}}
@@ -36,9 +37,10 @@
 		</div>
 	</div>
 	</a>
-
 	{{end}}
-
+	{{ else }}
+	<h1>Для просмотра новостей необходимо зарегестрироваться</h1> 
+	{{ end }}
 </div>
 </div>
 

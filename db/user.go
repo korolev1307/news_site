@@ -5,14 +5,14 @@ import (
 	"log"
 )
 
-func CreateUser(name, surname, patronymic, login, password string) error {
-	err := QueryFunc("insert into users(name, surname, patronumic, login, password) values(?,?,?,?,?)", name, surname, patronymic, login, password)
+func CreateUser(name, surname, patronymic, login, password, snils string) error {
+	err := QueryFunc("insert into users(name, surname, patronumic, login, password, snils) values(?,?,?,?,?,?)", name, surname, patronymic, login, password, snils)
 	return err
 }
 
 func ValidUser(username, password string) bool {
 	var passwordFromDB string
-	userSQL := "select password from users where login=?"
+	userSQL := "select password from users where login=? and allowed_registration=1"
 	log.Print("validating user ", username)
 	rows := database.query(userSQL, username)
 
@@ -20,6 +20,7 @@ func ValidUser(username, password string) bool {
 	if rows.Next() {
 		err := rows.Scan(&passwordFromDB)
 		if err != nil {
+
 			return false
 		}
 	}
@@ -48,15 +49,17 @@ func GetUserID(username string) (int, error) {
 
 func GetUserById(id int) (types.User, error) {
 	var user types.User
-	query := "select name, surname, patronumic, administrator, moderator from users where id=?"
-	rows := database.query(query, id)
-	defer rows.Close()
-	if rows.Next() {
-		err := rows.Scan(&user.Name, &user.Surname, &user.Patronymic, &user.Administrator, &user.Moderator)
-		if err != nil {
-			return user, err
+	query := "select name, surname, patronumic, administrator, moderator, snils, allowed_registration from users where id=?"
+	if id != -1 {
+		rows := database.query(query, id)
+		defer rows.Close()
+		if rows.Next() {
+			err := rows.Scan(&user.Name, &user.Surname, &user.Patronymic, &user.Administrator, &user.Moderator, &user.Snils, &user.Allowed_registration)
+			if err != nil {
+				return user, err
+			}
+			user.Id = id
 		}
-		user.Id = id
 	}
 	return user, nil
 }
@@ -80,13 +83,13 @@ func GetAllUsers() (types.Context, error) {
 	var user types.User
 	var users []types.User
 	var context types.Context
-	userSQL := "select id, name, surname, patronumic, login, administrator, moderator from users"
+	userSQL := "select id, name, surname, patronumic, login, administrator, moderator, snils, allowed_registration from users"
 	rows := database.query(userSQL)
 
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(&user.Id, &user.Name, &user.Surname, &user.Patronymic, &user.Login, &user.Administrator, &user.Moderator)
+		err := rows.Scan(&user.Id, &user.Name, &user.Surname, &user.Patronymic, &user.Login, &user.Administrator, &user.Moderator, &user.Snils, &user.Allowed_registration)
 		if err != nil {
 			log.Println(err)
 		}
@@ -96,7 +99,7 @@ func GetAllUsers() (types.Context, error) {
 	return context, nil
 }
 
-func UpdateUserRole(id, administrator, moderator int) error {
-	err := QueryFunc("update users set administrator=?, moderator=? where id=?", administrator, moderator, id)
+func UpdateUserRole(id, administrator, moderator, allowed_registration int) error {
+	err := QueryFunc("update users set administrator=?, moderator=?, allowed_registration=? where id=?", administrator, moderator, allowed_registration, id)
 	return err
 }

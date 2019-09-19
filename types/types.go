@@ -5,13 +5,15 @@ import (
 )
 
 type User struct {
-	Id            int
-	Name          string
-	Surname       string
-	Patronymic    string
-	Login         string
-	Administrator bool
-	Moderator     bool
+	Id                   int
+	Name                 string
+	Surname              string
+	Patronymic           string
+	Login                string
+	Snils                string
+	Allowed_registration bool
+	Administrator        bool
+	Moderator            bool
 }
 
 type Context struct {

@@ -1,19 +1,14 @@
 package main
 
 import (
-	"log"
-	//"fmt"
-	_ "github.com/mattn/go-sqlite3"
-	"net/http"
-	//"github.com/korolev1307/news_site/db"
 	"github.com/korolev1307/news_site/views"
+	_ "github.com/mattn/go-sqlite3"
+	"log"
+	"net/http"
 )
 
 func main() {
-
-	//log.Println(db.SearchName(1))
 	views.PopulateTemplates()
-
 	http.HandleFunc("/", views.HomePage)
 	http.HandleFunc("/login/", views.LoginPage)
 	http.HandleFunc("/logout/", views.RequiresLogin(views.LogoutPage))

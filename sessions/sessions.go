@@ -21,7 +21,7 @@ func IsLoggedIn(r *http.Request) bool {
 
 func GetCurrentUserLogin(r *http.Request) string {
 	session, err := Store.Get(r, "session")
-	if err == nil {
+	if session.Values["loggedin"] == "true" && err == nil {
 		return session.Values["login"].(string)
 	}
 	return ""

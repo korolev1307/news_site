@@ -29,10 +29,11 @@ func UserListPage(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 		administrator, _ := strconv.Atoi(r.Form.Get("administrator"))
 		moderator, _ := strconv.Atoi(r.Form.Get("moderator"))
+		allowed_registration, _ := strconv.Atoi(r.Form.Get("allowed_registration"))
 		id, _ := strconv.Atoi(r.Form.Get("id"))
 		log.Println(id, administrator, moderator)
 
-		err := db.UpdateUserRole(id, administrator, moderator)
+		err := db.UpdateUserRole(id, administrator, moderator, allowed_registration)
 		if err != nil {
 			http.Error(w, "Unable to update user roles", http.StatusInternalServerError)
 		} else {

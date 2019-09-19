@@ -85,14 +85,14 @@ func SignUpPage(w http.ResponseWriter, r *http.Request) {
 		patronumic := r.Form.Get("patronumic")
 		login := r.Form.Get("login")
 		password := r.Form.Get("password")
+		snils := r.Form.Get("snils")
+		log.Println(name, surname, patronumic, login, password, snils)
 
-		log.Println(name, surname, patronumic, login, password)
-
-		err := db.CreateUser(name, surname, patronumic, login, password)
+		err := db.CreateUser(name, surname, patronumic, login, password, snils)
 		if err != nil {
 			http.Error(w, "Unable to sign user up", http.StatusInternalServerError)
 		} else {
-			http.Redirect(w, r, "/login/", 302)
+			http.Redirect(w, r, "/", 302)
 		}
 	}
 }

@@ -6,13 +6,13 @@
         patronumic varchar(100),
         login varchar(100),
         password varchar(1000),
+        snils varchar(100),
         administrator boolean default 0,
-        moderator boolean default 0
+        moderator boolean default 0,
+        allowed_registration boolean default 0
     );
-    INSERT INTO "users" VALUES(1,'Александр','Королев','Дмитриевич','korolev1307','password',1,0);
 
     --news
-
     CREATE TABLE news (
         id integer primary key autoincrement,
         title varchar(200),
